@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>xml 파싱하기</title>
+        <script>
+            window.onload = function() {
+ 
+                //1.Ajax 요청 객체 생성
+                var request;
+                if (window.XMLHttpRequest) {
+                    request = new XMLHttpRequest;
+                } else {
+                    request = new ActiveXObject('microsoft.XMLHTTP');
+                }
+ 
+                //2.Ajax 요청
+                request.open("GET","data.xml");
+                request.send();
+                //준비상태가 바뀌면
+                
+				/*
+				address
+				name
+				contents
+				tag
+				*/
+                request.onreadystatechange = function() {
+                    if (request.readyState == 4) {
+                    
+                        if (request.status >= 200 && request.status < 300) {
+                            var xml = request.responseXML;
+                            
+							
+							var parseAddress = xml.getElementsByTagName("address");
+                            var parseName = xml.getElementsByTagName("name");
+                            var parseContents = xml.getElementsByTagName("contents");
+							var parseTag = xml.getElementsByTagName("tag");
+							
+                            for (var i = 0; i < parseAddress.length; i++) {
+                                var address = parseAddress[i].childNodes[0].nodeValue;
+                                var name = parseName[i].childNodes[0].nodeValue;
+								var contents = parseContents[i].childNodes[0].nodeValue;
+								var tag = parseTag[i].childNodes[0].nodeValue;
+                                alert(address + ":" + name + ":" + tag);
+                            }
+ 
+                            //요청하는게 xml이면 responseXML 일반텍스트면 response
+ 
+                        } else {
+                            alert(request.status);
+                        }
+                    }
+                }
+            }
+ 
+       </script>
+ 
+    </head>
+ 
+    <body>
+        <div id="content"></div>
+ 
+    </body>
+ 
+</html>
